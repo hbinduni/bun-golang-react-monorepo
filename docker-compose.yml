@@ -1,0 +1,45 @@
+services:
+  # Go/Fiber Server
+  server:
+    image: ${IMAGE_REGISTRY:-ghcr.io}/${GITHUB_USER}/${PROJECT_NAME:-bun-golang-react-monorepo}-server:${IMAGE_VERSION:-latest}
+    container_name: ${SERVER_CONTAINER_NAME:-monorepo-server}
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      PORT: ${SERVER_PORT:-3000}
+      DATABASE_URL: ${DATABASE_URL}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost}
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "${SERVER_PORT:-3000}:3000"
+    networks:
+      - monorepo-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # React Client
+  client:
+    image: ${IMAGE_REGISTRY:-ghcr.io}/${GITHUB_USER}/${PROJECT_NAME:-bun-hono-react-monorepo}-client:${IMAGE_VERSION:-latest}
+    container_name: ${CLIENT_CONTAINER_NAME:-monorepo-client}
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000}
+    ports:
+      - "${CLIENT_PORT:-80}:80"
+    depends_on:
+      - server
+    networks:
+      - monorepo-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  monorepo-network:
+    driver: bridge

@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: monorepo-ingress
+  namespace: bun-hono-react
+  labels:
+    app: monorepo
+  annotations:
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+    # kubernetes.io/ingress.class: nginx
+spec:
+  ingressClassName: nginx
+  rules:
+  # Client routing
+  - host: your-domain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: client-service
+            port:
+              number: 80
+
+  # API routing
+  - host: api.your-domain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: server-service
+            port:
+              number: 3000
+
+  # TLS configuration (uncomment when ready to use HTTPS)
+  # tls:
+  # - hosts:
+  #   - your-domain.com
+  #   - api.your-domain.com
+  #   secretName: monorepo-tls-cert

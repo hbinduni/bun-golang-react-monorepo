@@ -1,0 +1,99 @@
+# ===========================
+# Dependencies
+# ===========================
+node_modules/
+
+# ===========================
+# Build Outputs
+# ===========================
+dist/
+client/dist/
+server/bin/
+.turbo/
+*.tsbuildinfo
+
+# ===========================
+# Environment Variables
+# ===========================
+.env
+.env.local
+.env.*.local
+.env.build
+server/.env
+client/.env
+
+# Keep examples
+!.env.example
+!.env.*.example
+!server/.env.example
+!client/.env.example
+
+# ===========================
+# Testing
+# ===========================
+coverage/
+
+# ===========================
+# Logs
+# ===========================
+*.log
+
+# ===========================
+# IDE & Editors
+# ===========================
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# ===========================
+# Operating System
+# ===========================
+.DS_Store
+Thumbs.db
+[Dd]esktop.ini
+
+# ===========================
+# Security & Secrets
+# ===========================
+*.pem
+*.key
+*.cert
+*.crt
+secrets/
+.secrets/
+
+# ===========================
+# Database
+# ===========================
+pgdata/
+postgres-data/
+
+# ===========================
+# Docker
+# ===========================
+docker-compose.override.yml
+
+# ===========================
+# Kubernetes
+# ===========================
+k8s/secret.yaml
+k8s/imagepullsecret.yaml
+.env.k8s
+.env.k8s.local
+!k8s/*.template
+!.env.k8s.example
+
+# ===========================
+# Biome
+# ===========================
+.biome-cache/
+
+# ===========================
+# Temporary Files
+# ===========================
+tmp/
+temp/
+*.tmp

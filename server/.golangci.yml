@@ -1,0 +1,51 @@
+# golangci-lint configuration
+# https://golangci-lint.run/usage/configuration/
+
+run:
+  timeout: 5m
+  tests: true
+  
+linters:
+  enable:
+    # Default linters
+    - errcheck      # Check for unchecked errors
+    - gosimple      # Simplify code
+    - govet         # Reports suspicious constructs
+    - ineffassign   # Detects ineffectual assignments
+    - staticcheck   # Go static analysis
+    - unused        # Check for unused code
+    
+    # Additional recommended linters
+    - gofmt         # Check code is gofmt-ed
+    - goimports     # Check imports are formatted
+    - misspell      # Check for misspelled English words
+    - revive        # Fast, configurable, extensible, flexible, and beautiful linter
+    - gosec         # Security issues
+    - bodyclose     # Check HTTP response body is closed
+    - unconvert     # Remove unnecessary type conversions
+    - unparam       # Reports unused function parameters
+    
+linters-settings:
+  gofmt:
+    simplify: true
+  
+  revive:
+    rules:
+      - name: exported
+        disabled: true  # Allow unexported returns in exported functions
+      
+  gosec:
+    excludes:
+      - G404  # Use of weak random number generator (math/rand)
+      
+issues:
+  exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  
+  exclude-rules:
+    # Exclude test files from certain checks
+    - path: _test\.go
+      linters:
+        - errcheck
+        - gosec

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bun-hono-react
+  labels:
+    name: bun-hono-react
+    app: monorepo

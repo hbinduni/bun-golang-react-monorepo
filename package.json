@@ -1,0 +1,53 @@
+{
+  "name": "bun-hono-react-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack monorepo with Go Fiber, React, PostgreSQL, and Docker",
+  "packageManager": "bun@1.3.0",
+  "workspaces": [
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently --kill-others --names 'SERVER,CLIENT' --prefix-colors 'blue,green' 'bun run dev:server' 'bun run dev:client'",
+    "dev:server": "cd server && go run .",
+    "dev:client": "bun run --filter='@monorepo/client' dev",
+    "build": "bun run build:server && bun run build:client",
+    "build:server": "cd server && go build -o bin/server .",
+    "build:client": "bun run --filter='@monorepo/client' build",
+    "typecheck": "cd client && bunx tsgo -b",
+    "format": "make fmt-all",
+    "lint": "make lint-all",
+    "check": "make check-all",
+    "check:fix": "make fix-all",
+    "clean": "rm -rf dist coverage server/bin client/dist",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage",
+    "test:health": "bun test tests/health-check.test.ts",
+    "precommit": "make check-all && bun test",
+    "db:create": "dotenv -e server/.env -- sh -c 'psql \"$DATABASE_URL\" -f db/schema.sql'",
+    "db:drop": "dotenv -e server/.env -- sh -c 'psql \"$DATABASE_URL\" -c \"DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public;\"'",
+    "db:seed": "dotenv -e server/.env -- sh -c 'psql \"$DATABASE_URL\" -f db/seed.sql'",
+    "db:run": "dotenv -e server/.env -- sh -c 'psql \"$DATABASE_URL\" -f'",
+    "db:fresh": "bun run db:drop && bun run db:create && bun run db:seed",
+    "db:reset": "bun run db:fresh",
+    "db:shell": "dotenv -e server/.env -- sh -c 'psql \"$DATABASE_URL\"'",
+    "db:tables": "dotenv -e server/.env -- sh -c 'psql \"$DATABASE_URL\" -c \"\\dt\"'",
+    "db:cleanup-sessions": "dotenv -e server/.env -- sh -c 'psql \"$DATABASE_URL\" -c \"SELECT cleanup_expired_sessions();\"'",
+    "update:frontend": "bun update vite @vitejs/plugin-react react react-dom --latest",
+    "check:versions": "bunx vite --version && bun pm ls react react-dom @vitejs/plugin-react"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.13",
+    "@types/bun": "^1.3.8",
+    "@typescript/native-preview": "^7.0.0-dev.20260202.1",
+    "@vitejs/plugin-react": "^5.1.3",
+    "concurrently": "^9.2.1",
+    "dotenv-cli": "^11.0.0",
+    "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  }
+}

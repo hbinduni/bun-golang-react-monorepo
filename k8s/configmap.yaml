@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: monorepo-config
+  namespace: bun-hono-react
+  labels:
+    app: monorepo
+data:
+  # Server configuration
+  NODE_ENV: "production"
+  SERVER_PORT: "3000"
+
+  # Client configuration
+  VITE_API_URL: "http://server-service:3000"

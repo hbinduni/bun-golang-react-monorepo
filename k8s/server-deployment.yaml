@@ -1,0 +1,141 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-deployment
+  namespace: bun-hono-react
+  labels:
+    app: monorepo
+    component: server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: monorepo
+      component: server
+  template:
+    metadata:
+      labels:
+        app: monorepo
+        component: server
+    spec:
+      containers:
+      - name: server
+        image: ghcr.io/GITHUB_USER/bun-hono-react-monorepo-server:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        env:
+        # ConfigMap values
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: monorepo-config
+              key: NODE_ENV
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: monorepo-config
+              key: SERVER_PORT
+        - name: FRONTEND_URL
+          valueFrom:
+            configMapKeyRef:
+              name: monorepo-config
+              key: FRONTEND_URL
+              optional: true
+        # Database
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: monorepo-secret
+              key: DATABASE_URL
+        # JWT Authentication
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: monorepo-secret
+              key: JWT_SECRET
+        # OAuth - Google
+        - name: GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: monorepo-secret
+              key: GOOGLE_CLIENT_ID
+              optional: true
+        - name: GOOGLE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: monorepo-secret
+              key: GOOGLE_CLIENT_SECRET
+              optional: true
+        - name: GOOGLE_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: monorepo-secret
+              key: GOOGLE_REDIRECT_URI
+              optional: true
+        # OAuth - Facebook
+        - name: FACEBOOK_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: monorepo-secret
+              key: FACEBOOK_CLIENT_ID
+              optional: true
+        - name: FACEBOOK_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: monorepo-secret
+              key: FACEBOOK_CLIENT_SECRET
+              optional: true
+        - name: FACEBOOK_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: monorepo-secret
+              key: FACEBOOK_REDIRECT_URI
+              optional: true
+        # OAuth - Twitter
+        - name: TWITTER_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: monorepo-secret
+              key: TWITTER_CLIENT_ID
+              optional: true
+        - name: TWITTER_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: monorepo-secret
+              key: TWITTER_CLIENT_SECRET
+              optional: true
+        - name: TWITTER_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: monorepo-secret
+              key: TWITTER_REDIRECT_URI
+              optional: true
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      # Uncomment if using private registry
+      # imagePullSecrets:
+      # - name: ghcr-secret

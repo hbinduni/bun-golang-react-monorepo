@@ -1,0 +1,131 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.13/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "maxSize": 2097152
+  },
+  "formatter": {
+    "enabled": true,
+    "lineWidth": 120,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf"
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "asNeeded",
+      "trailingCommas": "es5",
+      "quoteStyle": "single",
+      "bracketSpacing": false,
+      "arrowParentheses": "always"
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedImports": "error",
+        "useUniqueElementIds": "warn",
+        "useImportExtensions": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "useTemplate": "warn",
+        "useImportType": "error",
+        "useNodejsImportProtocol": "error"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off",
+        "useButtonType": "warn",
+        "noLabelWithoutControl": "off",
+        "useSemanticElements": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": "warn",
+        "noVar": "error"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "fix": "unsafe",
+          "options": {
+            "attributes": ["classList"],
+            "functions": ["clsx", "cva", "tw", "cn"]
+          }
+        }
+      }
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [":URL:", ":PACKAGE_WITH_PROTOCOL:", ":NODE:", ":PACKAGE:", ":ALIAS:", ":PATH:", ":RELATIVE:"]
+          }
+        }
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/routeTree.gen.ts"],
+      "linter": {
+        "enabled": false
+      },
+      "formatter": {
+        "enabled": false
+      },
+      "assist": {
+        "enabled": false
+      }
+    },
+    {
+      "includes": ["**/tests/**", "**/*.test.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.css"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noUnknownAtRules": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/Skeleton.tsx"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noArrayIndexKey": "off"
+          }
+        }
+      }
+    }
+  ]
+}
