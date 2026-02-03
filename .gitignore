@@ -97,3 +97,4 @@ k8s/imagepullsecret.yaml
 tmp/
 temp/
 *.tmp
+output-logs.txt
