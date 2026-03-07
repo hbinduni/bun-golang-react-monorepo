@@ -2,7 +2,7 @@ package config
 
 import (
 	"os"
-	"strings"
+
 )
 
 type Config struct {
@@ -27,13 +27,13 @@ func (c *Config) IsDevelopment() bool {
 	return c.Environment == "development"
 }
 
-func (c *Config) GetAllowedOrigins() string {
+func (c *Config) GetAllowedOrigins() []string {
 	origins := []string{
 		c.FrontendURL,
 		"http://localhost:5173",
 		"http://localhost:3000",
 	}
-	return strings.Join(origins, ",")
+	return origins
 }
 
 func getEnv(key, defaultValue string) string {

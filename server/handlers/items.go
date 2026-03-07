@@ -6,7 +6,7 @@ import (
 	"github.com/binduni/bun-golang-react-monorepo/server/middleware"
 	"github.com/binduni/bun-golang-react-monorepo/server/models"
 	"github.com/binduni/bun-golang-react-monorepo/server/utils"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -23,7 +23,7 @@ func NewItemsHandler(db *database.DB, cfg *config.Config) *ItemsHandler {
 }
 
 // ListItems returns all items for the authenticated user
-func (h *ItemsHandler) ListItems(c *fiber.Ctx) error {
+func (h *ItemsHandler) ListItems(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse("Unauthorized"))
@@ -38,7 +38,7 @@ func (h *ItemsHandler) ListItems(c *fiber.Ctx) error {
 }
 
 // GetItem returns a single item by ID
-func (h *ItemsHandler) GetItem(c *fiber.Ctx) error {
+func (h *ItemsHandler) GetItem(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse("Unauthorized"))
@@ -66,7 +66,7 @@ func (h *ItemsHandler) GetItem(c *fiber.Ctx) error {
 }
 
 // CreateItem creates a new item
-func (h *ItemsHandler) CreateItem(c *fiber.Ctx) error {
+func (h *ItemsHandler) CreateItem(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse("Unauthorized"))
@@ -78,7 +78,7 @@ func (h *ItemsHandler) CreateItem(c *fiber.Ctx) error {
 		Status      models.ItemStatus `json:"status"`
 	}
 
-	if err := c.BodyParser(&req); err != nil {
+	if err := c.Bind().Body(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse("Invalid request body"))
 	}
 
@@ -109,7 +109,7 @@ func (h *ItemsHandler) CreateItem(c *fiber.Ctx) error {
 }
 
 // UpdateItem updates an existing item
-func (h *ItemsHandler) UpdateItem(c *fiber.Ctx) error {
+func (h *ItemsHandler) UpdateItem(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse("Unauthorized"))
@@ -140,7 +140,7 @@ func (h *ItemsHandler) UpdateItem(c *fiber.Ctx) error {
 		Status      models.ItemStatus `json:"status"`
 	}
 
-	if err := c.BodyParser(&req); err != nil {
+	if err := c.Bind().Body(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse("Invalid request body"))
 	}
 
@@ -163,7 +163,7 @@ func (h *ItemsHandler) UpdateItem(c *fiber.Ctx) error {
 }
 
 // DeleteItem deletes an item
-func (h *ItemsHandler) DeleteItem(c *fiber.Ctx) error {
+func (h *ItemsHandler) DeleteItem(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse("Unauthorized"))

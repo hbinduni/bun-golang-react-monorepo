@@ -8,7 +8,7 @@ import (
 	"github.com/binduni/bun-golang-react-monorepo/server/middleware"
 	"github.com/binduni/bun-golang-react-monorepo/server/models"
 	"github.com/binduni/bun-golang-react-monorepo/server/utils"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -25,9 +25,9 @@ func NewAuthHandler(db *database.DB, cfg *config.Config) *AuthHandler {
 }
 
 // Register handles user registration
-func (h *AuthHandler) Register(c *fiber.Ctx) error {
+func (h *AuthHandler) Register(c fiber.Ctx) error {
 	var req models.RegisterRequest
-	if err := c.BodyParser(&req); err != nil {
+	if err := c.Bind().Body(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse("Invalid request body"))
 	}
 
@@ -113,9 +113,9 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 }
 
 // Login handles user login
-func (h *AuthHandler) Login(c *fiber.Ctx) error {
+func (h *AuthHandler) Login(c fiber.Ctx) error {
 	var req models.LoginRequest
-	if err := c.BodyParser(&req); err != nil {
+	if err := c.Bind().Body(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse("Invalid request body"))
 	}
 
@@ -178,9 +178,9 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 }
 
 // RefreshToken handles token refresh
-func (h *AuthHandler) RefreshToken(c *fiber.Ctx) error {
+func (h *AuthHandler) RefreshToken(c fiber.Ctx) error {
 	var req models.RefreshTokenRequest
-	if err := c.BodyParser(&req); err != nil {
+	if err := c.Bind().Body(&req); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(models.ErrorResponse("Invalid request body"))
 	}
 
@@ -217,7 +217,7 @@ func (h *AuthHandler) RefreshToken(c *fiber.Ctx) error {
 }
 
 // Logout handles user logout (invalidates session)
-func (h *AuthHandler) Logout(c *fiber.Ctx) error {
+func (h *AuthHandler) Logout(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse("Unauthorized"))
@@ -233,7 +233,7 @@ func (h *AuthHandler) Logout(c *fiber.Ctx) error {
 }
 
 // GetCurrentUser returns the authenticated user's information
-func (h *AuthHandler) GetCurrentUser(c *fiber.Ctx) error {
+func (h *AuthHandler) GetCurrentUser(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse("Unauthorized"))
@@ -248,7 +248,7 @@ func (h *AuthHandler) GetCurrentUser(c *fiber.Ctx) error {
 }
 
 // GetSessions returns all active sessions for the authenticated user
-func (h *AuthHandler) GetSessions(c *fiber.Ctx) error {
+func (h *AuthHandler) GetSessions(c fiber.Ctx) error {
 	userID := middleware.GetUserID(c)
 	if userID == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse("Unauthorized"))

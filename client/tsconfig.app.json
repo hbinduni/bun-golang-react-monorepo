@@ -14,7 +14,11 @@
     "resolveJsonModule": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
-    "noEmit": true,
+
+    "noEmit": false,
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "jsx": "react-jsx",
 
     /* Linting */

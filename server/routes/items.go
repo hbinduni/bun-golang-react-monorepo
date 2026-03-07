@@ -5,7 +5,7 @@ import (
 	"github.com/binduni/bun-golang-react-monorepo/server/database"
 	"github.com/binduni/bun-golang-react-monorepo/server/handlers"
 	"github.com/binduni/bun-golang-react-monorepo/server/middleware"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 func SetupItemsRoutes(router fiber.Router, cfg *config.Config, db *database.DB) {

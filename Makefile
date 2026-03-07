@@ -464,9 +464,9 @@ k8s-full-deploy: login docker-build-all push-all k8s-deploy ## Complete K8s work
 # Code Quality
 # ============================================================================
 
-typecheck: ## Type-check client with tsgo
-	@echo "$(BLUE)Type-checking client with tsgo...$(NC)"
-	cd client && bunx tsgo -b
+typecheck: ## Type-check tests and client with tsgo
+	@echo "$(BLUE)Type-checking tests and client with tsgo...$(NC)"
+	bunx tsgo -p tsconfig.json --noEmit && cd client && bunx tsgo -b --noEmit
 	@echo "$(GREEN)✓ Type-check passed$(NC)"
 
 fmt-server: ## Format Go code

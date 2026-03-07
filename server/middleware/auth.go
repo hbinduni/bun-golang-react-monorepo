@@ -5,12 +5,12 @@ import (
 
 	"github.com/binduni/bun-golang-react-monorepo/server/models"
 	"github.com/binduni/bun-golang-react-monorepo/server/utils"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 // AuthMiddleware validates JWT tokens and attaches user info to context
 func AuthMiddleware(jwtSecret string) fiber.Handler {
-	return func(c *fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
 		authHeader := c.Get("Authorization")
 		if authHeader == "" {
 			return c.Status(fiber.StatusUnauthorized).JSON(models.ErrorResponse("Missing authorization header"))
@@ -41,7 +41,7 @@ func AuthMiddleware(jwtSecret string) fiber.Handler {
 }
 
 // GetUserID retrieves the authenticated user ID from context
-func GetUserID(c *fiber.Ctx) string {
+func GetUserID(c fiber.Ctx) string {
 	if userID, ok := c.Locals("userID").(string); ok {
 		return userID
 	}
@@ -49,7 +49,7 @@ func GetUserID(c *fiber.Ctx) string {
 }
 
 // GetUserRole retrieves the authenticated user role from context
-func GetUserRole(c *fiber.Ctx) models.UserRole {
+func GetUserRole(c fiber.Ctx) models.UserRole {
 	if role, ok := c.Locals("userRole").(models.UserRole); ok {
 		return role
 	}
@@ -58,7 +58,7 @@ func GetUserRole(c *fiber.Ctx) models.UserRole {
 
 // RequireRole middleware ensures the user has a specific role
 func RequireRole(allowedRoles ...models.UserRole) fiber.Handler {
-	return func(c *fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
 		userRole := GetUserRole(c)
 
 		for _, role := range allowedRoles {
@@ -73,7 +73,7 @@ func RequireRole(allowedRoles ...models.UserRole) fiber.Handler {
 
 // OptionalAuth middleware that doesn't fail if token is missing
 func OptionalAuth(jwtSecret string) fiber.Handler {
-	return func(c *fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
 		authHeader := c.Get("Authorization")
 		if authHeader == "" {
 			return c.Next()
@@ -99,7 +99,7 @@ func OptionalAuth(jwtSecret string) fiber.Handler {
 }
 
 // GetClientIP extracts the client IP address
-func GetClientIP(c *fiber.Ctx) string {
+func GetClientIP(c fiber.Ctx) string {
 	// Check X-Forwarded-For header first (for proxies)
 	if xff := c.Get("X-Forwarded-For"); xff != "" {
 		// Take the first IP if multiple

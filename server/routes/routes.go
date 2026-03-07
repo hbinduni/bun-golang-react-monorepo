@@ -7,12 +7,12 @@ import (
 	"github.com/binduni/bun-golang-react-monorepo/server/config"
 	"github.com/binduni/bun-golang-react-monorepo/server/database"
 	"github.com/binduni/bun-golang-react-monorepo/server/models"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 )
 
 func SetupRoutes(app *fiber.App, cfg *config.Config, db *database.DB) {
 	// Root endpoint - API information
-	app.Get("/", func(c *fiber.Ctx) error {
+	app.Get("/", func(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{
 			"name":    "Monorepo API",
 			"version": "2.0.0",
@@ -51,7 +51,7 @@ func SetupRoutes(app *fiber.App, cfg *config.Config, db *database.DB) {
 	})
 
 	// Health check endpoint
-	app.Get("/health", func(c *fiber.Ctx) error {
+	app.Get("/health", func(c fiber.Ctx) error {
 		var m runtime.MemStats
 		runtime.ReadMemStats(&m)
 
@@ -94,10 +94,15 @@ func SetupRoutes(app *fiber.App, cfg *config.Config, db *database.DB) {
 	items := api.Group("/items")
 	if db != nil {
 		SetupItemsRoutes(items, cfg, db)
+	} else {
+		// Return empty data when database is not configured
+		items.Get("/", func(c fiber.Ctx) error {
+			return c.JSON(models.SuccessResponse([]any{}))
+		})
 	}
 
 	// 404 handler
-	app.Use(func(c *fiber.Ctx) error {
+	app.Use(func(c fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).JSON(
 			models.ErrorResponse("Route not found: " + c.Method() + " " + c.Path()),
 		)

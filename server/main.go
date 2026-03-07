@@ -7,10 +7,10 @@ import (
 	"github.com/binduni/bun-golang-react-monorepo/server/config"
 	"github.com/binduni/bun-golang-react-monorepo/server/database"
 	"github.com/binduni/bun-golang-react-monorepo/server/routes"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/cors"
+	"github.com/gofiber/fiber/v3/middleware/logger"
+	"github.com/gofiber/fiber/v3/middleware/recover"
 	"github.com/joho/godotenv"
 )
 
@@ -56,9 +56,9 @@ func main() {
 	app.Use(cors.New(cors.Config{
 		AllowOrigins:     cfg.GetAllowedOrigins(),
 		AllowCredentials: true,
-		AllowMethods:     "GET,POST,PUT,DELETE,PATCH,OPTIONS",
-		AllowHeaders:     "Content-Type,Authorization",
-		ExposeHeaders:    "Content-Length,X-Request-Id",
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
+		AllowHeaders:     []string{"Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length", "X-Request-Id"},
 	}))
 
 	// Setup routes
@@ -73,7 +73,7 @@ func main() {
 }
 
 // Global error handler
-func errorHandler(c *fiber.Ctx, err error) error {
+func errorHandler(c fiber.Ctx, err error) error {
 	code := fiber.StatusInternalServerError
 	message := "Internal server error"
 

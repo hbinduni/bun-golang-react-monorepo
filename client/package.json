@@ -1,11 +1,11 @@
 {
   "name": "@monorepo/client",
   "private": true,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "bunx tsgo -b && vite build",
+    "build": "bunx tsgo -b --noEmit && vite build",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write .",
