@@ -3,7 +3,7 @@
 A modern full-stack monorepo template with **Go/Fiber** backend, **React** frontend, **PostgreSQL** database, and **Docker/Kubernetes** deployment.
 
 [![Go](https://img.shields.io/badge/Go-1.25-00ADD8)](https://go.dev)
-[![Fiber](https://img.shields.io/badge/Fiber-v2-00ACD7)](https://gofiber.io)
+[![Fiber](https://img.shields.io/badge/Fiber-v3-00ACD7)](https://gofiber.io)
 [![React](https://img.shields.io/badge/React-19-blue)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-7-purple)](https://vite.dev)
 [![tsgo](https://img.shields.io/badge/tsgo-7.0--preview-blue)](https://github.com/microsoft/typescript-go)
@@ -17,7 +17,7 @@ A **production-ready monorepo template** for building full-stack applications wi
 
 - ✅ **Modern Stack**: Go/Fiber + React 19 + Vite 7 + Tailwind CSS 4
 - ✅ **Fast Backend**: Compiled Go binary with excellent performance
-- ✅ **Fast Type-Checking**: tsgo (TypeScript 7 native compiler) — ~7x faster than tsc
+- ✅ **Fast Type-Checking**: tsgo (TypeScript 7 native compiler) — ~10x faster than tsc
 - ✅ **Authentication**: JWT tokens with access/refresh pattern, session tracking
 - ✅ **Type Safety**: TypeScript strict mode frontend, compile-time Go backend
 - ✅ **TypeID**: K-sortable, type-safe identifiers (`user_`, `item_`, `sess_`)
@@ -134,8 +134,11 @@ make build-client     # React only
 ### Type-Checking
 
 ```bash
-# Type-check client with tsgo (~7x faster than tsc)
+# Type-check both root tests and client with tsgo (~10x faster than tsc)
 bun run typecheck
+
+# Safe fallback using tsc
+bun run typecheck:safe
 ```
 
 ### Quality Checks
@@ -222,7 +225,7 @@ import { Button } from '@client/components/ui'
 
 ### Backend
 - **Go 1.25**: Server language
-- **Fiber v2**: Web framework
+- **Fiber v3**: Web framework
 - **pgx v5**: PostgreSQL driver
 - **golang-jwt v5**: JWT authentication
 - **TypeID**: K-sortable type-safe identifiers
