@@ -44,7 +44,6 @@ jobs:
       matrix:
         module: ["server"]
     env:
-      GOTOOLCHAIN: local
       GOWORK: 'off'
     steps:
       - uses: actions/checkout@v7
@@ -57,4 +56,5 @@ jobs:
       - name: Scan dependencies and standard library
         run: bash scripts/code-vuln.sh "$MODULE"
         env:
+          GOTOOLCHAIN: local
           MODULE: ${{ matrix.module }}

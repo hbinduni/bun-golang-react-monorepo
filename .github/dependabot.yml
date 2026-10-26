@@ -1,49 +1,65 @@
-# Version updates are separate from the vulnerability scans. Major upgrades remain individual PRs.
+# Version updates are separate from vulnerability detection; major upgrades remain separate.
 version: 2
 updates:
-  - package-ecosystem: "bun"
+  - package-ecosystem: bun
     directories:
-      - "/"
+      - /
     schedule:
       interval: weekly
     groups:
       compatible-updates:
-        patterns: ["*"]
-        update-types: [minor, patch]
-  - package-ecosystem: "github-actions"
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+  - package-ecosystem: github-actions
     directories:
-      - "/"
+      - /
     schedule:
       interval: weekly
     groups:
       compatible-updates:
-        patterns: ["*"]
-        update-types: [minor, patch]
-  - package-ecosystem: "docker"
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+  - package-ecosystem: docker
     directories:
-      - "/client"
-      - "/server"
+      - /client
+      - /k8s
+      - /server
     schedule:
       interval: weekly
     groups:
       compatible-updates:
-        patterns: ["*"]
-        update-types: [minor, patch]
-  - package-ecosystem: "docker-compose"
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+  - package-ecosystem: docker-compose
     directories:
-      - "/"
+      - /
     schedule:
       interval: weekly
     groups:
       compatible-updates:
-        patterns: ["*"]
-        update-types: [minor, patch]
-  - package-ecosystem: "gomod"
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+  - package-ecosystem: gomod
     directories:
-      - "/server"
+      - /server
     schedule:
       interval: weekly
     groups:
       compatible-updates:
-        patterns: ["*"]
-        update-types: [minor, patch]
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
