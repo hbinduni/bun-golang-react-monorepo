@@ -1,5 +1,5 @@
 # Go Server Dockerfile - Multi-stage build for minimal production image
-FROM golang:1.25-alpine AS builder
+FROM golang:1.27-alpine AS builder
 
 # Install build dependencies
 RUN apk add --no-cache git ca-certificates tzdata
@@ -21,7 +21,7 @@ COPY . ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags="-w -s" -o /build/bin/server .
 
 # Production image - minimal Alpine
-FROM alpine:3.21
+FROM alpine:3.24
 
 # Install runtime dependencies
 RUN apk --no-cache add ca-certificates tzdata
