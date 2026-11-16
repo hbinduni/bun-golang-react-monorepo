@@ -21,7 +21,7 @@ COPY . ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags="-w -s" -o /build/bin/server .
 
 # Production image - minimal Alpine
-FROM alpine:3.21
+FROM alpine:3.24
 
 # Install runtime dependencies
 RUN apk --no-cache add ca-certificates tzdata
