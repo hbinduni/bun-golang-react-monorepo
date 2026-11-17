@@ -2,6 +2,7 @@
 version: 2
 updates:
   - package-ecosystem: bun
+    open-pull-requests-limit: 0
     directories:
       - /
     schedule:
@@ -14,6 +15,7 @@ updates:
           - minor
           - patch
   - package-ecosystem: github-actions
+    open-pull-requests-limit: 0
     directories:
       - /
     schedule:
@@ -26,6 +28,7 @@ updates:
           - minor
           - patch
   - package-ecosystem: docker
+    open-pull-requests-limit: 0
     directories:
       - /client
       - /k8s
@@ -40,6 +43,7 @@ updates:
           - minor
           - patch
   - package-ecosystem: docker-compose
+    open-pull-requests-limit: 0
     directories:
       - /
     schedule:
@@ -52,6 +56,7 @@ updates:
           - minor
           - patch
   - package-ecosystem: gomod
+    open-pull-requests-limit: 0
     directories:
       - /server
     schedule:
